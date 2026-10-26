@@ -7,7 +7,7 @@ const isMobile =
 
 // Velocidad: 1 = normal del sistema. Menos de 1 = más despacio.
 export const RATES = isMobile
-  ? { normal: 0.8, slow: 0.45 } // celular
+  ? { normal: 0.8, slow: 0.4 } // celular
   : { normal: 0.95, slow: 0.5 }; // computadora
 
 // Voces preferidas en orden (las primeras suenan más naturales)
