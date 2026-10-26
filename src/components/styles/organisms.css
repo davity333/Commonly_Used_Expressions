@@ -1189,7 +1189,7 @@
 
 @media (max-width: 768px) {
   .page--volume {
-    padding-left: 44px;
+    padding-right: 44px;
   }
 
   .expression-card {
@@ -1198,15 +1198,15 @@
 
   .alpha-index {
     position: fixed;
-    top: 50%;
-    left: 6px;
+    top: 54%;
+    right: 6px;
     z-index: 20;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 6px 3px;
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.542);
     box-shadow: var(--shadow-sm);
     backdrop-filter: blur(4px);
     transform: translateY(-50%);
