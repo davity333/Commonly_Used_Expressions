@@ -24,7 +24,7 @@ function ExpressionCard({ data }) {
   const closeTenses = useCallback(() => setShowTenses(false), []);
 
   return (
-    <article className={`expression-card ${showExamples ? 'is-open' : ''}`}>
+    <article className={`expression-card ${showExamples ? 'is-open' : ''}`} data-letter={data.expression[0].toUpperCase()}>
       {known && (
         <span className="expression-card__known" title="Marcada como dominada en la Ruleta">
           <Icon name="check" size={14} strokeWidth={3} />

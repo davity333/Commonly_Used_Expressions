@@ -4,7 +4,7 @@ import PageHeader from '../organism/PageHeader';
 import ExpressionList from '../organism/ExpressionList';
 import PronunciationGuide from '../organism/PronunciationGuide';
 import expressionsVol1 from '../../assets/data/expressionsVol1';
-
+import AlphabetIndex from '../organism/AlphabetIndex';
 function VolumeOnePage() {
   return (
     <main className="page page--volume">
@@ -21,6 +21,7 @@ function VolumeOnePage() {
       />
       <PronunciationGuide />
       <ExpressionList items={expressionsVol1} />
+      <AlphabetIndex items={expressionsVol1} />
     </main>
   );
 }

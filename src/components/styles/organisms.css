@@ -1181,3 +1181,72 @@
     padding: 14px 16px 20px;
   }
 }
+
+/* Índice A-Z (solo celular) */
+.alpha-index {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .page--volume {
+    padding-left: 44px;
+  }
+
+  .expression-card {
+    scroll-margin-top: 16px;
+  }
+
+  .alpha-index {
+    position: fixed;
+    top: 50%;
+    left: 6px;
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 6px 3px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.85);
+    box-shadow: var(--shadow-sm);
+    backdrop-filter: blur(4px);
+    transform: translateY(-50%);
+  }
+
+  .alpha-index__letter {
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: clamp(17px, 2.9vh, 24px);
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: none;
+    color: var(--green-800);
+    font-family: var(--font-display);
+    font-size: 0.72rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  }
+
+  .alpha-index__letter.is-empty {
+    color: var(--ink-muted);
+    opacity: 0.35;
+    cursor: default;
+  }
+
+  /* Letra donde estás: círculo de color */
+  .alpha-index__letter.is-active {
+    height: 24px;
+    margin: 2px 0;
+    background: linear-gradient(135deg, var(--green-400), var(--blue-500));
+    color: var(--white);
+    font-size: 0.8rem;
+    transform: scale(1.2);
+    box-shadow: 0 3px 8px rgba(74, 155, 224, 0.4);
+  }
+}
+
+@media (max-width: 768px) and (prefers-reduced-motion: reduce) {
+  .alpha-index__letter { transition: none; }
+}

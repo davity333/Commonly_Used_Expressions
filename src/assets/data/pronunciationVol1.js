@@ -4,7 +4,7 @@
 // - "speak" (opcional) = texto exacto que leerá la voz cuando la expresión tiene "/" o comillas.
 
 const pronunciationVol1 = {
-  'A drag': { pronunciation: 'a-DRAG' },
+  'A drag': { pronunciation: 'a-DRAG', speak: 'uh drag' },
   'Come on': { pronunciation: 'kam-ON' },
   'Drop it': { pronunciation: 'DRA-pit' },
   'Fall in love': { pronunciation: 'fol-in-LAV' },
