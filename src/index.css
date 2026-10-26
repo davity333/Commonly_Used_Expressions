@@ -1,0 +1,78 @@
+/* Tokens de color, tipografía y fondo global */
+:root {
+  --white: #ffffff;
+  --green-50: #f1fff5;
+  --green-100: #dcfce6;
+  --green-200: #bff7cf;
+  --green-300: #95eeb0;
+  --green-400: #5fdc8b;
+  --green-600: #22a45d;
+  --green-800: #146b3c;
+  --blue-50: #f0f8ff;
+  --blue-100: #dceeff;
+  --blue-200: #b9ddff;
+  --blue-300: #8cc6f7;
+  --blue-500: #4a9be0;
+  --blue-700: #23679f;
+  --ink: #1d3b33;
+  --ink-soft: #4f6b63;
+  --ink-muted: #7a918a;
+
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+  --shadow-sm: 0 2px 8px rgba(29, 59, 51, 0.06);
+  --shadow-md: 0 8px 24px rgba(29, 59, 51, 0.08);
+  --shadow-lg: 0 14px 34px rgba(29, 59, 51, 0.12);
+
+  --font-display: 'Fredoka', 'Nunito', system-ui, sans-serif;
+  --font-body: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  color-scheme: light;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  font-family: var(--font-body);
+  color: var(--ink);
+  line-height: 1.5;
+  /* Blanco arriba → verde neón pastel abajo */
+  background: linear-gradient(180deg, #ffffff 0%, #f6fff8 35%, #d6fbe0 70%, #a9f5be 100%) fixed;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  position: relative;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid var(--blue-300);
+  outline-offset: 3px;
+}

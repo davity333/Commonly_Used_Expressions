@@ -1,0 +1,5 @@
+/* Estilos por nivel del diseño atómico */
+@import './components/styles/atoms.css';
+@import './components/styles/molecules.css';
+@import './components/styles/organisms.css';
+@import './components/styles/pages.css';
