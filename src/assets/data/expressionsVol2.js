@@ -976,14 +976,203 @@ const source = [
   }
 ];
 
-const expressionsVol2 = source.map((item, index) => ({
-  id: `v2-${String(index + 1).padStart(2, '0')}`,
-  number: index + 1,
-  ...item,
-  pronunciation: '',
-  speak: item.expression,
-  definitionEs: '',
-  examples: item.examples.map((example) => ({ ...example, es: '' })),
-}));
+const verbInitials = new Set([
+  'arrive', 'ask', 'apologize', 'believe', 'belong', 'borrow', 'call', 'care',
+  'compare', 'concentrate', 'cut', 'deal', 'decide', 'depend', 'divide', 'dream',
+  'hand', 'hang', 'hear', 'hold', 'hope', 'invest', 'introduce', 'invite',
+  'insist', 'join', 'jot', 'kick', 'know', 'kneel', 'laugh', 'lie', 'look',
+  'make', 'matter', 'move', 'multiply', 'open', 'order', 'protect', 'put',
+  'rely', 'rip', 'search', 'set', 'show', 'shut', 'talk', 'tell', 'throw',
+  'think', 'turn', 'use', 'wait', 'worry', 'yell',
+]);
+
+const irregularVerbs = {
+  arise: ['arose', 'arisen'],
+  add: ['added', 'added'],
+  admit: ['admitted', 'admitted'],
+  be: ['was', 'been'],
+  become: ['became', 'become'],
+  begin: ['began', 'begun'],
+  break: ['broke', 'broken'],
+  bring: ['brought', 'brought'],
+  beg: ['begged', 'begged'],
+  buy: ['bought', 'bought'],
+  catch: ['caught', 'caught'],
+  choose: ['chose', 'chosen'],
+  clap: ['clapped', 'clapped'],
+  come: ['came', 'come'],
+  do: ['did', 'done'],
+  drop: ['dropped', 'dropped'],
+  draw: ['drew', 'drawn'],
+  drink: ['drank', 'drunk'],
+  drive: ['drove', 'driven'],
+  eat: ['ate', 'eaten'],
+  fall: ['fell', 'fallen'],
+  feel: ['felt', 'felt'],
+  fit: ['fit', 'fit'],
+  find: ['found', 'found'],
+  fly: ['flew', 'flown'],
+  forget: ['forgot', 'forgotten'],
+  get: ['got', 'gotten'],
+  give: ['gave', 'given'],
+  go: ['went', 'gone'],
+  grab: ['grabbed', 'grabbed'],
+  have: ['had', 'had'],
+  hear: ['heard', 'heard'],
+  keep: ['kept', 'kept'],
+  know: ['knew', 'known'],
+  leave: ['left', 'left'],
+  lose: ['lost', 'lost'],
+  make: ['made', 'made'],
+  meet: ['met', 'met'],
+  pay: ['paid', 'paid'],
+  plan: ['planned', 'planned'],
+  read: ['read', 'read'],
+  regret: ['regretted', 'regretted'],
+  rip: ['ripped', 'ripped'],
+  ride: ['rode', 'ridden'],
+  run: ['ran', 'run'],
+  say: ['said', 'said'],
+  see: ['saw', 'seen'],
+  send: ['sent', 'sent'],
+  sit: ['sat', 'sat'],
+  speak: ['spoke', 'spoken'],
+  spend: ['spent', 'spent'],
+  stand: ['stood', 'stood'],
+  stop: ['stopped', 'stopped'],
+  take: ['took', 'taken'],
+  teach: ['taught', 'taught'],
+  tell: ['told', 'told'],
+  think: ['thought', 'thought'],
+  understand: ['understood', 'understood'],
+  write: ['wrote', 'written'],
+  wrap: ['wrapped', 'wrapped'],
+};
+
+function soundLikeEnglish(text) {
+  return text
+    .toLowerCase()
+    .split(/([a-z]+|[^a-z]+)/g)
+    .filter(Boolean)
+    .map((part) => {
+      if (!/^[a-z]+$/.test(part)) return part;
+      const sound = part
+        .replace(/tch/g, 'ch').replace(/th/g, 'd').replace(/sh/g, 'sh')
+        .replace(/ch/g, 'ch').replace(/ph/g, 'f').replace(/ng/g, 'ng')
+        .replace(/ee|ea/g, 'i').replace(/oo/g, 'u').replace(/ou|ow/g, 'au')
+        .replace(/ai|ay/g, 'ei').replace(/oa/g, 'ou').replace(/qu/g, 'ku')
+        .replace(/c(?=[eiy])/g, 's').replace(/c/g, 'k').replace(/j/g, 'y')
+        .replace(/v/g, 'b').replace(/w/g, 'u').replace(/y/g, 'i')
+        .replace(/x/g, 'ks').replace(/h/g, '');
+      return sound.replace(/^([aeiou]+)(.*)$/, (_, first, rest) => `${first.toUpperCase()}${rest}`);
+    })
+    .join('')
+    .replace(/\s+/g, '-');
+}
+
+function verbFormsFor(expression, translation) {
+  const firstWord = expression.match(/^[a-z]+/i)?.[0]?.toLowerCase();
+  if (!verbInitials.has(firstWord)) {
+    const meaning = translation.toLowerCase();
+    return {
+      be: true,
+      note: 'Esta expresión suele describir a una persona o cosa. Se combina con be; el adjetivo o complemento no cambia.',
+      forms: {
+        base: { en: `are ${expression}`, es: `son / están ${meaning}`, pron: soundLikeEnglish(`are ${expression}`) },
+        past: { en: `were ${expression}`, es: `eran / estaban ${meaning}`, pron: soundLikeEnglish(`were ${expression}`) },
+        participle: { en: `been ${expression}`, es: `sido / estado ${meaning}`, pron: soundLikeEnglish(`been ${expression}`) },
+        gerund: { en: `being ${expression}`, es: `siendo / estando ${meaning}`, pron: soundLikeEnglish(`being ${expression}`) },
+        third: { en: `is ${expression}`, es: `es / está ${meaning}`, pron: soundLikeEnglish(`is ${expression}`) },
+      },
+    };
+  }
+
+  const regularPast = firstWord.endsWith('e')
+    ? `${firstWord}d`
+    : /[^aeiou]y$/.test(firstWord)
+      ? `${firstWord.slice(0, -1)}ied`
+      : `${firstWord}ed`;
+  const [past, participle] = irregularVerbs[firstWord] ?? [regularPast, regularPast];
+  const rest = expression.slice(firstWord.length);
+  const gerund = firstWord.endsWith('ie')
+    ? `${firstWord.slice(0, -2)}ying`
+    : firstWord.endsWith('e') && !firstWord.endsWith('ee')
+      ? `${firstWord.slice(0, -1)}ing`
+      : `${firstWord}ing`;
+  const third = /[^aeiou]y$/.test(firstWord)
+    ? `${firstWord.slice(0, -1)}ies`
+    : /(s|sh|ch|x|z|o)$/.test(firstWord)
+      ? `${firstWord}es`
+      : `${firstWord}s`;
+  const form = (en, es) => ({ en: `${en}${rest}`, es, pron: soundLikeEnglish(`${en}${rest}`) });
+
+  return {
+    note: `El verbo principal es "${firstWord}". La expresión se mantiene después del verbo; revisa estas formas comunes.`,
+    forms: {
+      base: form(firstWord, translation),
+      past: form(past, `${translation} (pasado)`),
+      participle: form(participle, `${translation} (participio)`),
+      gerund: form(gerund, `${translation} (gerundio)`),
+      third: form(third, `${translation} (él / ella)`),
+    },
+  };
+}
+
+function examplesFor(item) {
+  const studyExamples = [
+    {
+      en: `The expression "${item.expression}" means "${item.translation}".`,
+      es: `La expresión "${item.expression}" significa "${item.translation}".`,
+    },
+    {
+      en: `I wrote down "${item.expression}" to practice it.`,
+      es: `Anoté "${item.expression}" para practicarla.`,
+    },
+    {
+      en: `Can you use "${item.expression}" in a sentence?`,
+      es: `¿Puedes usar "${item.expression}" en una oración?`,
+    },
+    {
+      en: `We studied "${item.expression}" in English class.`,
+      es: `Estudiamos "${item.expression}" en la clase de inglés.`,
+    },
+    {
+      en: `She repeated "${item.expression}" out loud.`,
+      es: `Ella repitió "${item.expression}" en voz alta.`,
+    },
+  ];
+  const existing = item.examples.map((example) => ({ ...example }));
+  return [...existing, ...studyExamples].slice(0, 5);
+}
+
+const expressionsVol2 = source.map((item, index) => {
+  const firstWord = item.expression.match(/^[a-z]+/i)?.[0]?.toLowerCase();
+  const isVerb = verbInitials.has(firstWord);
+  const expressionExample = `[s:I] [v:use] [e:"${item.expression}"] [c:in a sentence].`;
+  const meaning = item.translation.toLowerCase();
+  const structure = {
+    type: isVerb ? 'verb' : 'describe',
+    formula: isVerb
+      ? `s:Sujeto|v:verbo conjugado|e:${item.expression}|c:complemento (según el contexto)`
+      : `s:Sujeto|v:be (am / is / are)|e:${item.expression}|c:complemento (opcional)`,
+    tip: isVerb
+      ? `El verbo "${firstWord}" se conjuga según el sujeto y el tiempo. Conserva la preposición o partícula que forma parte de la expresión.`
+      : 'Se usa para describir a alguien o algo. Normalmente aparece después de am, is o are.',
+    example: expressionExample,
+    es: `Uso la expresión "${item.expression}" en una oración.`,
+  };
+
+  return {
+    id: `v2-${String(index + 1).padStart(2, '0')}`,
+    number: index + 1,
+    ...item,
+    pronunciation: soundLikeEnglish(item.expression),
+    speak: item.expression,
+    definitionEs: `Se usa para expresar la idea de "${meaning}".`,
+    structure,
+    verbForms: verbFormsFor(item.expression, item.translation),
+    examples: examplesFor(item),
+  };
+});
 
 export default expressionsVol2;
