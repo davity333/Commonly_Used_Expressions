@@ -5,7 +5,7 @@ function ExampleItem({ index, en, es }) {
       <span className="example-item__num">{index}</span>
       <div>
         <p className="example-item__en">{en}</p>
-        <p className="example-item__es">{es}</p>
+        {es && <p className="example-item__es">{es}</p>}
       </div>
     </li>
   );

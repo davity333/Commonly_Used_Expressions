@@ -9,7 +9,7 @@ function Definition({ text, textEs }) {
         Definition
       </span>
       <p className="definition__en">{text}</p>
-      <p className="definition__es">{textEs}</p>
+      {textEs && <p className="definition__es">{textEs}</p>}
     </div>
   );
 }

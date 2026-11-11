@@ -31,7 +31,7 @@ function buildQuiz(items) {
     }));
 }
 
-function QuizGame({ items }) {
+function QuizGame({ items, volumeLabel = 'Volumen 1', bestKey = 'quiz', gamesTo }) {
   const { best, saveBest } = useProgress();
   const { speak } = useSpeech();
 
@@ -67,8 +67,8 @@ function QuizGame({ items }) {
       setChosen(null);
       return;
     }
-    setIsRecord(score > (best.quiz ?? -1));
-    saveBest('quiz', score);
+    setIsRecord(score > (best[bestKey] ?? -1));
+    saveBest(bestKey, score);
     setFinished(true);
   };
 
@@ -94,9 +94,10 @@ function QuizGame({ items }) {
 
   return (
     <GameShell
-      title="Quiz"
+      title={`Quiz · ${volumeLabel}`}
       icon="quiz"
       active={!finished && (index > 0 || answered)}
+      gamesTo={gamesTo}
       stats={
         !finished && (
           <>
@@ -110,7 +111,7 @@ function QuizGame({ items }) {
         <GameResult
           score={score}
           total={TOTAL}
-          best={Math.max(best.quiz ?? 0, score)}
+          best={Math.max(best[bestKey] ?? 0, score)}
           isRecord={isRecord}
           mistakes={mistakes}
           onRetry={restart}

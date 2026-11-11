@@ -27,7 +27,7 @@ function pickSegments(items, knownIds) {
   return [...pending, ...known].slice(0, SEGMENTS);
 }
 
-function RouletteGame({ items }) {
+function RouletteGame({ items, volumeLabel = 'Volumen 1', gamesTo }) {
   const { known, markKnown, markReview } = useProgress();
   const { speak } = useSpeech();
 
@@ -104,12 +104,13 @@ function RouletteGame({ items }) {
 
   return (
     <GameShell
-      title="Ruleta"
+      title={`Ruleta · ${volumeLabel}`}
       icon="wheel"
       active={active}
+      gamesTo={gamesTo}
       stats={
         <>
-          <StatPill icon="check" value={`${known.length}/${items.length}`} label="dominadas" />
+          <StatPill icon="check" value={`${known.filter((id) => items.some((item) => item.id === id)).length}/${items.length}`} label="dominadas" />
           <StatPill icon="flame" value={stats.streak} label="racha" variant="orange" />
           <StatPill icon="refresh" value={stats.spins} label="giros" variant="blue" />
         </>

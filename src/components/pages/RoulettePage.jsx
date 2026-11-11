@@ -1,8 +1,12 @@
 import RouletteGame from '../organism/RouletteGame';
-import expressionsVol1 from '../../assets/data/expressionsVol1';
+import { useSearchParams } from 'react-router-dom';
+import { getVolumeOption } from '../../utils/volumes';
 
 function RoulettePage() {
-  return <RouletteGame items={expressionsVol1} />;
+  const [searchParams] = useSearchParams();
+  const selected = getVolumeOption(searchParams.get('volumen'));
+  const gamesTo = `/juegos?volumen=${selected.value}`;
+  return <RouletteGame items={selected.items} volumeLabel={selected.label} gamesTo={gamesTo} />;
 }
 
 export default RoulettePage;

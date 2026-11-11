@@ -4,13 +4,13 @@ import Icon from '../atoms/Icon';
 import ConfirmModal from './ConfirmModal';
 import useExitGuard from '../../hooks/useExitGuard';
 
-function GameShell({ title, icon, active, stats, children }) {
+function GameShell({ title, icon, active, stats, children, gamesTo = '/juegos' }) {
   const blocker = useExitGuard(active);
 
   return (
     <main className="page page--game">
       <header className="game-header">
-        <Link to="/juegos" className="back-link">
+        <Link to={gamesTo} className="back-link">
           <Icon name="exit" size={18} />
           Salir
         </Link>

@@ -32,7 +32,7 @@ function ExpressionCard({ data }) {
         </span>
       )}
 
-      <ExpressionHeader number={data.id} expression={data.expression} translation={data.translation} />
+      <ExpressionHeader number={data.number ?? data.id} expression={data.expression} translation={data.translation} />
 
       <div className="expression-card__audio">
         <Pronunciation text={data.pronunciation} />
@@ -42,16 +42,22 @@ function ExpressionCard({ data }) {
       <Definition text={data.definition} textEs={data.definitionEs} />
 
       {/* Estructura y Tiempos verbales: abren modal */}
-      <div className="expression-card__toggles">
-        <Button variant="structure" onClick={() => setShowStructure(true)} aria-haspopup="dialog">
-          <Icon name="layers" size={17} />
-          Estructura
-        </Button>
-        <Button variant="tenses" onClick={() => setShowTenses(true)} aria-haspopup="dialog">
-          <Icon name="clock" size={17} />
-          Tiempos verbales
-        </Button>
-      </div>
+      {(data.structure || data.verbForms) && (
+        <div className="expression-card__toggles">
+          {data.structure && (
+            <Button variant="structure" onClick={() => setShowStructure(true)} aria-haspopup="dialog">
+              <Icon name="layers" size={17} />
+              Estructura
+            </Button>
+          )}
+          {data.verbForms && (
+            <Button variant="tenses" onClick={() => setShowTenses(true)} aria-haspopup="dialog">
+              <Icon name="clock" size={17} />
+              Tiempos verbales
+            </Button>
+          )}
+        </div>
+      )}
 
       {/* Ejemplos: se despliegan hacia abajo */}
       <PanelToggle

@@ -20,7 +20,7 @@ function buildRounds(items) {
     .map((item) => ({ item, options: buildOptions(item, items) }));
 }
 
-function ListenGame({ items }) {
+function ListenGame({ items, volumeLabel = 'Volumen 1', bestKey = 'listen', gamesTo }) {
   const { best, saveBest } = useProgress();
   const { supported, speak, speaking } = useSpeech();
 
@@ -62,8 +62,8 @@ function ListenGame({ items }) {
       speak(rounds[index + 1].item.speak, 'normal');
       return;
     }
-    setIsRecord(score > (best.listen ?? -1));
-    saveBest('listen', score);
+    setIsRecord(score > (best[bestKey] ?? -1));
+    saveBest(bestKey, score);
     setFinished(true);
   };
 
@@ -90,9 +90,10 @@ function ListenGame({ items }) {
 
   return (
     <GameShell
-      title="¿Qué escuchaste?"
+      title={`¿Qué escuchaste? · ${volumeLabel}`}
       icon="headphones"
       active={started && !finished}
+      gamesTo={gamesTo}
       stats={
         started && !finished && (
           <>
@@ -128,7 +129,7 @@ function ListenGame({ items }) {
         <GameResult
           score={score}
           total={TOTAL}
-          best={Math.max(best.listen ?? 0, score)}
+          best={Math.max(best[bestKey] ?? 0, score)}
           isRecord={isRecord}
           mistakes={mistakes}
           onRetry={restart}

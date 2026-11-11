@@ -2,6 +2,8 @@
 import Heading from '../atoms/Heading';
 import Icon from '../atoms/Icon';
 import VolumeButton from '../molecules/VolumeButton';
+import expressionsVol1 from '../../assets/data/expressionsVol1';
+import expressionsVol2 from '../../assets/data/expressionsVol2';
 
 function MainMenu() {
   return (
@@ -15,8 +17,8 @@ function MainMenu() {
       <p className="main-menu__author">Creado por David Rey</p>
 
       <nav className="main-menu__buttons" aria-label="Secciones">
-        <VolumeButton to="/volumen-1" label="Volumen 1" sublabel="55 expresiones" icon="book" color="green" />
-        <VolumeButton to="/volumen-2" label="Volumen 2" sublabel="Próximamente" icon="books" color="blue" />
+        <VolumeButton to="/volumen-1" label="Volumen 1" sublabel={`${expressionsVol1.length} expresiones`} icon="book" color="green" />
+        <VolumeButton to="/volumen-2" label="Volumen 2" sublabel={`${expressionsVol2.length} expresiones`} icon="books" color="blue" />
         <VolumeButton to="/juegos" label="Juegos" sublabel="3 juegos" icon="gamepad" color="game" />
       </nav>
     </section>

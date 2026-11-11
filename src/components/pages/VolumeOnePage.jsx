@@ -13,7 +13,7 @@ function VolumeOnePage() {
         highlight="Vol 1"
         subtitle={`${expressionsVol1.length} expresiones · escucha, repite y practica`}
         action={
-          <Link to="/juegos" className="play-link">
+          <Link to="/juegos?volumen=1" className="play-link">
             <Icon name="gamepad" size={18} />
             Jugar
           </Link>
